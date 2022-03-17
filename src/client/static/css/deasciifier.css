@@ -1,0 +1,303 @@
+/*  */
+
+#navbar {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  box-shadow: none;
+  border-top: 0px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+.overlay-content {
+  overflow: scroll;
+}
+
+.background-content {
+  height: 100%;
+  overflow: auto;
+  margin-top: -5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#arrow {
+  position: relative;
+  padding: 6px 0;
+  z-index: 99;
+}
+
+#arrow:before {
+  content: "";
+  height: 0;
+  width: 0;
+  border-width: 0 8px 12px 8px;
+  border-style: solid;
+  border-color: transparent transparent #eeeeee transparent;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*  */
+
+.correction-menu {
+  font-size: 2em;
+  border-radius: 4px;
+  cursor: default;
+  user-select: none;
+  box-sizing: border-box;
+  font-family: Courier New, Courier, monospace;
+  transform: translateX(-50%);
+  display: none;
+  z-index: 99;
+  position: absolute;
+  box-shadow: 0 0 5px black;
+  white-space: nowrap;
+}
+
+.correction-menu-item {
+  display: inline-block;
+  border-left: 0;
+  border-right: 0;
+  width: 1em;
+  text-align: center;
+  vertical-align: top;
+  background: black;
+  color: white;
+}
+
+.correction-menu-item-first {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.correction-menu-item-last {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.correction-menu-item-alternative {
+  cursor: pointer;
+  color: orange;
+}
+
+.correction-menu-item-alternative:hover {
+  background: blue;
+  color: white;
+}
+
+.correction-menu-selection {
+  box-shadow: 0 0 3pt 2pt orange;
+  background: #ddd;
+}
+
+.deasciifier-highlight {
+  background: lightgreen;
+}
+
+.navbar-brand {
+  display: inline-block;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.navbar-brand img {
+  display: inline-block;
+  margin-right: 0.5em;
+  padding: 3px;
+}
+.navbar-brand img:hover {
+  -webkit-filter: drop-shadow(0 0 3px #888);
+  filter: drop-shadow(0 0 3px #888);
+}
+
+.navbar {
+  border-bottom: 1px solid #888;
+  /* Permalink - use to edit and share this gradient:
+      http://colorzilla.com/gradient-editor/#ffffff+0,ededed+100;WhiteCustom */
+  background: rgb(255, 255, 255); /* Old browsers */
+  background: -moz-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(237, 237, 237, 1) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(237, 237, 237, 1) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(237, 237, 237, 1) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+}
+
+.navbar > .container .navbar-brand,
+.navbar > .container-fluid .navbar-brand {
+  margin-left: 0;
+}
+
+.heading {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  color: #333;
+  text-shadow: 0 0 10px #222;
+  text-shadow: none;
+}
+
+.list-group-item {
+  border: 0;
+}
+
+.navbar-li-active {
+  background: rgb(33, 150, 243);
+  color: white;
+  font-weight: bold;
+}
+.navbar-li-active:hover {
+  background: orange;
+}
+.navbar-li-active .navbar-btn {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: #444;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  background: orange;
+  color: white;
+}
+
+.list-group {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.panel {
+  font-size: 1.2em;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #888;
+  padding: 5px;
+}
+/* Overrides */
+
+html {
+  font-family: "Proxima Nova", Arial, Helvetica, sans-serif;
+  height: 100%;
+  font-size: 1.2em;
+}
+
+body {
+  padding-top: 70px;
+  height: 100%;
+  background: transparent;
+}
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: auto;
+  font-family: Roboto;
+  font-size: 1.5em;
+}
+
+.CodeMirror-scroll {
+  min-height: 80vh;
+}
+
+.CodeMirror-empty {
+  outline: 1px solid #c22;
+}
+
+.CodeMirror-empty.CodeMirror-focused {
+  outline: none;
+}
+
+.CodeMirror pre.CodeMirror-placeholder {
+  color: #999;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.container-fluid {
+  width: 900px; /* Or 70em, but then virtual keyboard doesn't work. */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.text-container {
+  width: 900px; /* Same as container-fluid.width */
+  margin: 0 auto;
+  /* padding: 1px; */
+  box-shadow: 0 0 8px #888;
+}
+
+.navbar-nav {
+  margin: 0 auto;
+}
+
+.navbar-right {
+  margin-right: 0;
+  float: right;
+}
+
+.navbar {
+  box-shadow: -5px 0 5px #333;
+}
+
+.navbar-btn {
+  background: none;
+  color: none;
+  border: 0;
+  border-radius: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: 1.2em;
+  min-width: 3.5em;
+}
+.navbar-btn:hover {
+  background: orange;
+  color: white;
+}
+
+/* 900px/0.95 = 948px */
+@media (max-width: 948px) {
+  .container-fluid {
+    width: 95%;
+  }
+  .text-container {
+    width: 95%;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav > li {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-btn {
+    font-size: 1em;
+    min-width: 3em;
+  }
+}

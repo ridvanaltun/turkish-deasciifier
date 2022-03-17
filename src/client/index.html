@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <title>Turkish Deasciifier</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="tr" />
+    <meta name="google" value="notranslate" />
+
+    <meta
+      name="description"
+      content="Online Turkish Deasciifier automatically adds accented characters to
+  Turkish text. Useful for people who type Turkish on a non-Turkish keyboard."
+    />
+    <meta
+      name="keywords"
+      content="deasciifier, turkish, asciifier, turkce, turkce klavye,
+deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter cevrimi"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script>
+      window.$ =
+        window.jQuery = require("./static/libs/jquery/3.2.1/jquery.min.js");
+    </script>
+
+    <!-- jQuery -->
+    <!-- <script src="static/libs/jquery/3.2.1/jquery.min.js"></script> -->
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="static/libs/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+      src="static/libs/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha256-vq5vXhXmWMc2vLcJ/7Sx56rZcEQQJQ3fLX/SgP8UQpA="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- CodeMirror -->
+    <link
+      rel="stylesheet"
+      href="static/libs/codemirror/5.33.0/codemirror.min.css"
+    />
+    <script src="static/libs/codemirror/5.33.0/codemirror.min.js"></script>
+    <script src="static/libs/codemirror/5.33.0/placeholder.min.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="static/libs/fontawesome/5.0.2/js/all.js" defer></script>
+
+    <!-- Deasciifier -->
+    <script src="static/ts/bundle.js"></script>
+    <link rel="stylesheet" href="static/css/deasciifier.css" />
+  </head>
+
+  <body>
+    <div class="overlay">
+      <div class="overlay-content">
+        <div id="arrow"></div>
+        <nav id="navbar" class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-right">
+              <ul class="nav navbar-nav">
+                <li class="navbar-li-active">
+                  <button
+                    id="deasciify-btn"
+                    class="btn btn-default navbar-btn"
+                    title="cgiosu → çğıöşü"
+                  >
+                    <i class="fas fa-star hidden-xs"></i>
+                    <span>Deasciify</span>
+                  </button>
+                </li>
+                <li style="margin-left: -4px; margin-right: -4px">
+                  <button
+                    id="asciify-btn"
+                    class="btn btn-default navbar-btn"
+                    title="çğıöşü → cgiosu"
+                  >
+                    <span>Asciify</span>
+                  </button>
+                </li>
+                <li style="border-left: 1px solid #ccc; margin-right: -4px">
+                  <button
+                    id="undo-btn"
+                    class="btn btn-default navbar-btn"
+                    title="Geri al"
+                  >
+                    <i title="Geri al" class="fas fa-undo-alt"></i>
+                  </button>
+                </li>
+                <li style="border-left: 1px solid #ccc; margin-right: -1px">
+                  <button
+                    id="redo-btn"
+                    class="btn btn-default navbar-btn"
+                    title="Yinele"
+                  >
+                    <i title="Yinele" class="fas fa-redo-alt"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </nav>
+      </div>
+    </div>
+
+    <div class="background-content">
+      <div id="benchmark-result"></div>
+      <div id="status"></div>
+      <div id="keyboard" style="display: none"></div>
+
+      <div class="text-container">
+        <textarea
+          id="txt"
+          placeholder="Çevirmek istediğiniz metni buraya giriniz."
+        ></textarea>
+      </div>
+    </div>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
+        lineNumbers: false,
+        viewportMargin: Infinity,
+        lineWrapping: true,
+        minHeight: 900,
+        height: "dynamic",
+        autofocus: true,
+        readOnly: "nocursor",
+      });
+
+      function getSizeBin(result) {
+        if (!result || !result.text) {
+          return "empty";
+        }
+        var bins = [
+          10, 25, 50, 100, 250, 500, 1000, 2000, 5000, 10000, 25000, 50000,
+          100000, 250000, 500000, 1000000,
+        ];
+        for (var i = 0; i < bins.length; i++) {
+          if (result.text.length < bins[i]) {
+            return "length" + bins[i];
+          }
+        }
+        return "large";
+      }
+
+      var app = null;
+      window.Deasciifier = window.Deasciifier || {};
+      window.Deasciifier.onPatternListLoaded = function (patternList) {
+        editor.setOption("readOnly", false);
+        editor.focus();
+        app = new DeasciifierApp.App(
+          editor,
+          patternList,
+          document.body,
+          document.getElementById("keyboard")
+        );
+
+        $("#deasciify-btn").click(function () {
+          app.deasciifySelection();
+        });
+
+        $("#asciify-btn").click(function () {
+          app.asciifySelection();
+        });
+
+        $("#undo-btn").click(function () {
+          app.hideCorrectionMenu();
+          editor.execCommand("undo");
+        });
+
+        $("#redo-btn").click(function () {
+          app.hideCorrectionMenu();
+          editor.execCommand("redo");
+        });
+      };
+    </script>
+
+    <!-- Pattern list (very large) -->
+    <script type="text/javascript">
+      (function () {
+        var sc = document.createElement("script");
+        sc.type = "text/javascript";
+        sc.async = true;
+        sc.src = "static/js/_generated_patterns.js?2";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(sc, s);
+      })();
+    </script>
+    <!-- /Pattern list -->
+
+    <script>
+      $(document).on("DOMNodeInserted", function (e) {
+        if ($(e.target).hasClass("correction-menu")) {
+          // fit the correction menu
+          const correction = document.querySelector(
+            "body > div.correction-menu"
+          );
+          correction.style.transform = "translateX(-20%)";
+          correction.style.whiteSpace = "unset";
+          correction.style.boxShadow = "none";
+        }
+      });
+
+      // make navbar nicer
+      document.querySelector(
+        "body > div.overlay > div > nav > div"
+      ).style.width = "100%";
+
+      // use text-container full width
+      document.querySelector(
+        "body > div.background-content > div.text-container"
+      ).style.width = "100%";
+
+      // add same padding in input
+      document.querySelector(
+        "body > div.background-content > div.text-container > div"
+      ).style.paddingLeft = "5px";
+      document.querySelector(
+        "body > div.background-content > div.text-container > div"
+      ).style.paddingRight = "5px";
+
+      // erase input border
+      document.querySelector(
+        "body > div.background-content > div.text-container > div"
+      ).style.outline = "none";
+    </script>
+    <script>
+      const { ipcRenderer } = require("electron");
+
+      ipcRenderer.on("SET_CORRECTION_MENU", (_, enabled) => {
+        window.app.deasciiBox.setEnableCorrectionMenu(enabled);
+      });
+
+      ipcRenderer.on("SET_AUTO_CONVERT", (_, enabled) => {
+        window.app.deasciiBox.setEnableAutoConvert(enabled);
+      });
+
+      ipcRenderer.on("CLEAR_TEXT_AREA", () => {
+        window.app.textEditor.setText("");
+      });
+    </script>
+  </body>
+</html>

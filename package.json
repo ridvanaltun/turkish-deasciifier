@@ -1,0 +1,53 @@
+{
+  "name": "turkish-deasciifier",
+  "productName": "Turkish Deasciifier",
+  "version": "1.0.0",
+  "description": "Tray app for Turkish Deasciifier",
+  "main": "src/server/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ridvanaltun/turkish-deasciifier.git"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "lint": "eslint src",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "author": "Ridvan Altun",
+  "license": "MIT",
+  "keywords": [
+    "turkish",
+    "deasciifier",
+    "tray"
+  ],
+  "bugs": {
+    "url": "https://github.com/ridvanaltun/turkish-deasciifier/issues"
+  },
+  "homepage": "https://github.com/ridvanaltun/turkish-deasciifier#readme",
+  "dependencies": {
+    "electron-store": "^6.0.1",
+    "electron-util": "^0.17.2",
+    "nseventmonitor": "^1.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "electron": "^8.5.5",
+    "electron-builder": "^22.14.13",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0"
+  },
+  "build": {
+    "files": [
+      "**/*",
+      "src/client"
+    ],
+    "dmg": {
+      "title": "${productName}"
+    }
+  }
+}
