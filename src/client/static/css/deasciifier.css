@@ -1,5 +1,3 @@
-/*  */
-
 #navbar {
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
@@ -45,8 +43,6 @@
   left: 50%;
   transform: translateX(-50%);
 }
-
-/*  */
 
 .correction-menu {
   font-size: 2em;
@@ -166,9 +162,11 @@
   color: white;
   font-weight: bold;
 }
+
 .navbar-li-active:hover {
   background: orange;
 }
+
 .navbar-li-active .navbar-btn {
   color: white;
 }
@@ -242,7 +240,7 @@ body {
 }
 
 .text-container {
-  width: 900px; /* Same as container-fluid.width */
+  width: 100%;
   margin: 0 auto;
   /* padding: 1px; */
   box-shadow: 0 0 8px #888;
@@ -282,9 +280,6 @@ body {
 /* 900px/0.95 = 948px */
 @media (max-width: 948px) {
   .container-fluid {
-    width: 95%;
-  }
-  .text-container {
     width: 95%;
   }
 }

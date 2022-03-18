@@ -106,7 +106,6 @@ deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter
               </ul>
             </div>
           </div>
-          <!-- /.container-fluid -->
         </nav>
       </div>
     </div>
@@ -214,11 +213,6 @@ deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter
         "body > div.overlay > div > nav > div"
       ).style.width = "100%";
 
-      // use text-container full width
-      document.querySelector(
-        "body > div.background-content > div.text-container"
-      ).style.width = "100%";
-
       // add same padding in input
       document.querySelector(
         "body > div.background-content > div.text-container > div"
@@ -245,6 +239,18 @@ deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter
 
       ipcRenderer.on("CLEAR_TEXT_AREA", () => {
         window.app.textEditor.setText("");
+      });
+
+      ipcRenderer.on("FOCUS_EDITOR", () => {
+        editor.focus();
+      });
+
+      ipcRenderer.on("SET_EDITOR_LINE_NUMBERS", (_, enabled) => {
+        editor.setOption("lineNumbers", enabled);
+      });
+
+      ipcRenderer.on("SET_EDITOR_LINE_WRAPPING", (_, enabled) => {
+        editor.setOption("lineWrapping", enabled);
       });
     </script>
   </body>

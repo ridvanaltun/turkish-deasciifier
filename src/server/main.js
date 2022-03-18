@@ -1,18 +1,14 @@
-const { app, BrowserWindow, globalShortcut } = require("electron");
-
-const { is } = require("electron-util");
-
 const path = require("path");
-const Store = require("electron-store");
+const { app, BrowserWindow, globalShortcut } = require("electron");
 const { NSEventMonitor, NSEventMask } = require("nseventmonitor");
+const { is } = require("electron-util");
+const Store = require("electron-store");
+
 const TrayGenerator = require("./TrayGenerator");
 
 let mainWindow = null;
 let trayObject = null;
-
-const gotTheLock = app.requestSingleInstanceLock();
-
-const macEventMonitor = new NSEventMonitor();
+let macEventMonitor = null;
 
 const store = new Store();
 
@@ -29,13 +25,26 @@ const initStore = () => {
     store.set("translateWhileTyping", true);
   }
 
-  if (store.get("clearOnBlur") === undefined) {
-    store.set("clearOnBlur", true);
+  if (store.get("clearOnMinimize") === undefined) {
+    store.set("clearOnMinimize", true);
   }
 
   if (store.get("useShortcut") === undefined) {
     store.set("useShortcut", true);
   }
+
+  if (store.get("alwaysOnTop") === undefined) {
+    store.set("alwaysOnTop", false);
+  }
+};
+
+const enableMacEventMonitor = () => {
+  macEventMonitor.start(
+    NSEventMask.leftMouseDown | NSEventMask.rightMouseDown,
+    () => {
+      mainWindow.hide();
+    }
+  );
 };
 
 const createMainWindow = () => {
@@ -50,43 +59,50 @@ const createMainWindow = () => {
     webPreferences: {
       devTools: is.development,
       webviewTag: true,
-      backgroundThrottling: false,
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
+      // prevents renderer process code from not running when window is hidden
+      backgroundThrottling: false,
     },
   });
 
-  if (is.development) {
-    mainWindow.webContents.openDevTools({ mode: "detach" });
-    mainWindow.loadURL(
-      `file://${path.join(__dirname, "../../src/client/index.html")}`
-    );
-  } else {
-    mainWindow.loadURL(
-      `file://${path.join(__dirname, "../../src/client/index.html")}`
-    );
-  }
+  macEventMonitor = new NSEventMonitor();
 
-  mainWindow.on("focus", () => {
-    globalShortcut.register("Command+R", () => null);
-    macEventMonitor.start(
-      NSEventMask.leftMouseDown || NSEventMask.rightMouseDown,
-      () => {
-        mainWindow.hide();
-      }
-    );
-  });
+  if (is.development) mainWindow.webContents.openDevTools({ mode: "detach" });
+
+  mainWindow.loadURL(
+    `file://${path.join(__dirname, "../../src/client/index.html")}`
+  );
 
   mainWindow.on("blur", () => {
-    if (!mainWindow.webContents.isDevToolsOpened()) {
+    if (store.get("alwaysOnTop") === false) {
       mainWindow.hide();
-      globalShortcut.unregister("Command+R");
       macEventMonitor.stop();
+
+      if (store.get("clearOnMinimize")) {
+        mainWindow.webContents.send("CLEAR_TEXT_AREA");
+      }
     }
-    if (store.get("clearOnBlur")) {
-      mainWindow.webContents.send("CLEAR_TEXT_AREA");
+
+    if (mainWindow.webContents.isDevToolsOpened() === false) {
+      // unregister refresh shortcut
+      globalShortcut.unregister("Command+R");
     }
+  });
+
+  mainWindow.on("show", () => {
+    // register refresh shortcut
+    globalShortcut.register("Command+R", () => null);
+
+    if (mainWindow.isAlwaysOnTop() === false) enableMacEventMonitor();
+
+    mainWindow.webContents.send("FOCUS_EDITOR");
+  });
+
+  mainWindow.on("hide", () => {
+    // stop capturing global mouse events
+    macEventMonitor.stop();
   });
 };
 
@@ -104,6 +120,7 @@ const applyPreferences = () => {
     "SET_CORRECTION_MENU",
     store.get("showCorrectionBubble")
   );
+  mainWindow.setAlwaysOnTop(store.get("alwaysOnTop"));
 };
 
 store.onDidChange("translateWhileTyping", () => {
@@ -124,31 +141,45 @@ store.onDidChange("showCorrectionBubble", () => {
   }
 });
 
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on("ready", () => {
-    initStore();
-    createMainWindow();
-    createTray();
-    // applyPreferences();
+store.onDidChange("alwaysOnTop", () => {
+  if (mainWindow) {
+    const isEnabled = store.get("alwaysOnTop");
 
-    mainWindow.webContents.on("dom-ready", applyPreferences);
+    if (isEnabled) {
+      macEventMonitor.stop();
 
-    mainWindow.webContents.on("did-fail-load", () => console.log("fail"));
-  });
-
-  app.on("second-instance", () => {
-    if (mainWindow) {
       trayObject.showWindow();
+    } else {
+      enableMacEventMonitor();
+      // mainWindow.hide();
     }
-  });
-
-  if (!is.development) {
-    app.setLoginItemSettings({
-      openAtLogin: store.get("launchAtStart"),
-    });
   }
+});
 
-  app.dock.hide();
-}
+// hide dock icon
+app.dock.hide();
+
+const gotTheLock = app.requestSingleInstanceLock();
+if (gotTheLock === false) app.quit();
+
+app.on("window-all-closed", () => {
+  app.quit();
+});
+
+app.on("second-instance", () => {
+  if (mainWindow) trayObject.showWindow();
+});
+
+app.setLoginItemSettings({
+  openAtLogin: is.development ? false : store.get("launchAtStart"),
+});
+
+app.on("ready", () => {
+  initStore();
+  createMainWindow();
+  createTray();
+
+  mainWindow.webContents.on("dom-ready", applyPreferences);
+
+  mainWindow.webContents.on("did-fail-load", () => console.log("fail"));
+});
