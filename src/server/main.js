@@ -10,6 +10,8 @@ let mainWindow = null;
 let trayObject = null;
 let macEventMonitor = null;
 
+if (is.development) require("electron-reloader")(module);
+
 const store = new Store();
 
 const initStore = () => {
@@ -162,8 +164,14 @@ app.dock.hide();
 const gotTheLock = app.requestSingleInstanceLock();
 if (gotTheLock === false) app.quit();
 
+// Quit when all windows are closed
 app.on("window-all-closed", () => {
-  app.quit();
+  // On macOS it is common for applications and their
+  // menu bar to stay active until the user quits
+  // explicitly with Cmd + Q
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("second-instance", () => {

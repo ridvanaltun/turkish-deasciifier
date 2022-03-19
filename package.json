@@ -35,6 +35,7 @@
     "babel-eslint": "^10.1.0",
     "electron": "^17.1.2",
     "electron-builder": "^22.14.13",
+    "electron-reloader": "^1.2.3",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
