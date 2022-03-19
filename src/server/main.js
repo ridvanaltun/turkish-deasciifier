@@ -1,8 +1,13 @@
 const path = require("path");
-const { app, BrowserWindow, globalShortcut } = require("electron");
+const { app, BrowserWindow, globalShortcut, clipboard } = require("electron");
 const { NSEventMonitor, NSEventMask } = require("nseventmonitor");
 const { is } = require("electron-util");
 const Store = require("electron-store");
+
+const { Deasciifier } = require('../lib/deasciifier.min');
+const patterns = require('../lib/deasciifier.patterns.min');
+
+Deasciifier.init(patterns)
 
 const TrayGenerator = require("./TrayGenerator");
 
@@ -105,6 +110,12 @@ const createMainWindow = () => {
   mainWindow.on("hide", () => {
     // stop capturing global mouse events
     macEventMonitor.stop();
+  });
+
+  globalShortcut.register("Command+1", () =>{
+    const readText = clipboard.readText('clipboard');
+    const deasciifyedObject = Deasciifier.deasciify(readText)
+    clipboard.write(deasciifyedObject, 'clipboard')
   });
 };
 
