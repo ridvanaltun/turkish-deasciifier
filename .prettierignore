@@ -1,0 +1,11 @@
+.git
+dist
+node_modules
+src/client
+**/*.min.js
+**/*.min.css
+package.json
+package-lock.json
+CHANGELOG.md
+README.md
+LICENSE

@@ -4,15 +4,17 @@ const { NSEventMonitor, NSEventMask } = require("nseventmonitor");
 const { is } = require("electron-util");
 const Store = require("electron-store");
 
-const { Deasciifier } = require('../lib/deasciifier.min');
-const patterns = require('../lib/deasciifier.patterns.min');
+const { Deasciifier } = require("../lib/deasciifier.min");
+const patterns = require("../lib/deasciifier.patterns.min");
 
-Deasciifier.init(patterns)
+Deasciifier.init(patterns);
 
 const TrayGenerator = require("./TrayGenerator");
+// const AppUpdater = require("./AppUpdater");
 
 let mainWindow = null;
 let trayObject = null;
+// let updaterObject = null;
 let macEventMonitor = null;
 
 if (is.development) require("electron-reloader")(module);
@@ -112,12 +114,19 @@ const createMainWindow = () => {
     macEventMonitor.stop();
   });
 
-  globalShortcut.register("Command+1", () =>{
-    const readText = clipboard.readText('clipboard');
-    const deasciifyedObject = Deasciifier.deasciify(readText)
-    clipboard.write(deasciifyedObject, 'clipboard')
+  globalShortcut.register("Command+1", () => {
+    const readText = clipboard.readText("clipboard");
+    const deasciifyedObject = Deasciifier.deasciify(readText);
+    clipboard.write(deasciifyedObject, "clipboard");
   });
 };
+
+// const createUpdater = () => {
+//   updaterObject = new AppUpdater(
+//     path.join(__dirname, "../../src/client/version.html")
+//   );
+//   updaterObject.createUpdater();
+// };
 
 const createTray = () => {
   trayObject = new TrayGenerator(mainWindow, store);
@@ -197,6 +206,7 @@ app.on("ready", () => {
   initStore();
   createMainWindow();
   createTray();
+  // createUpdater();
 
   mainWindow.webContents.on("dom-ready", applyPreferences);
 

@@ -1,21 +1,31 @@
 {
   "name": "turkish-deasciifier",
   "productName": "Turkish Deasciifier",
-  "version": "1.1.0",
+  "version": "0.0.0-development",
   "description": "Tray app for Turkish Deasciifier",
   "main": "src/server/main.js",
+  "scripts": {
+    "commit": "git-cz",
+    "start": "electron .",
+    "build": "electron-builder build --mac --win --linux --publish never",
+    "publish": "electron-builder --mac --win --linux --publish always",
+    "postinstall": "electron-builder install-app-deps",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:active": "eslint-nibble .",
+    "semantic-release": "semantic-release",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
+  },
+  "author": {
+    "name": "Ridvan Altun",
+    "email": "ridvanaltun@outlook.com",
+    "url": "https://ridvanaltun.github.io/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ridvanaltun/turkish-deasciifier.git"
   },
-  "scripts": {
-    "start": "electron .",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps",
-    "lint": "eslint src",
-    "lint:fix": "npm run lint -- --fix"
-  },
-  "author": "Ridvan Altun",
   "license": "MIT",
   "keywords": [
     "turkish",
@@ -27,28 +37,45 @@
   },
   "homepage": "https://github.com/ridvanaltun/turkish-deasciifier#readme",
   "dependencies": {
+    "electron-log": "^4.4.6",
     "electron-store": "^6.0.1",
+    "electron-updater": "^4.6.5",
     "electron-util": "^0.17.2",
     "nseventmonitor": "^1.0.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@commitlint/cz-commitlint": "^16.2.3",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "babel-eslint": "^10.1.0",
+    "commitizen": "^4.2.4",
     "electron": "^17.1.2",
     "electron-builder": "^22.14.13",
+    "electron-notarize": "^1.1.1",
     "electron-reloader": "^1.2.3",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^16.0.3",
+    "eslint-nibble": "^8.0.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0"
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.0",
+    "semantic-release": "^19.0.2"
   },
-  "build": {
-    "files": [
-      "**/*",
-      "src/client"
-    ],
-    "dmg": {
-      "title": "${productName}"
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
     }
   }
 }

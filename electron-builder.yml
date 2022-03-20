@@ -1,0 +1,28 @@
+appId: com.github.ridvanaltun.turkishdeasciifier
+
+# sign for app store
+# afterSign: "./build/notarize.js"
+
+publish:
+  - github
+
+mac:
+  icon: "assets/images/icon.icns"
+  category: "public.app-category.utilities"
+  entitlements: "build/entitlements.mac.plist"
+  entitlementsInherit: "build/entitlements.mac.plist"
+  target:
+    - dmg
+
+win:
+  icon: "assets/images/icon.ico"
+  target:
+    - nsis
+    - portable
+
+linux:
+  icon: "assets/images/icon.icns"
+  category: "Utility"
+  target:
+    - deb
+    - AppImage

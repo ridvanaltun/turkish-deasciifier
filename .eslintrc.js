@@ -3,15 +3,16 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
-    browser: true
+    browser: true,
   },
+  plugins: ["prettier"],
   extends: [
-    'eslint:recommended'
+    "eslint:recommended",
+    // "plugin:prettier/recommended", // resolve conflicts between prettier and eslint
   ],
-  parser: 'babel-eslint',
+  parser: "babel-eslint",
   parserOptions: {
-    ecmaVersion: 'latest'
+    ecmaVersion: "latest",
   },
-  rules: {
-  }
-}
+  rules: {},
+};
