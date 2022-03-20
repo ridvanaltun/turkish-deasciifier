@@ -7,8 +7,8 @@
   "scripts": {
     "commit": "git-cz",
     "start": "electron .",
-    "build": "electron-builder build --mac --win --linux --publish never",
-    "publish": "electron-builder --mac --win --linux --publish always",
+    "build": "electron-builder --publish never --mac --win --linux",
+    "publish": "electron-builder --publish always --mac --win --linux",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
@@ -49,6 +49,7 @@
     "@commitlint/cz-commitlint": "^16.2.3",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^9.0.1",
     "babel-eslint": "^10.1.0",
     "commitizen": "^4.2.4",
     "electron": "^17.1.2",

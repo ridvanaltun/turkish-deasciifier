@@ -12,7 +12,13 @@ module.exports = {
       },
     ],
     [
-      "@semantic-release/git",
+      "@semantic-release/npm", // set package.json version
+      {
+        npmPublish: false,
+      },
+    ],
+    [
+      "@semantic-release/git", // send a commit
       {
         assets: ["package.json", "package-lock.json", "CHANGELOG.md"],
         message:
