@@ -40,8 +40,7 @@
     "electron-log": "^4.4.6",
     "electron-store": "^6.0.1",
     "electron-updater": "^4.6.5",
-    "electron-util": "^0.17.2",
-    "nseventmonitor": "^1.0.2"
+    "electron-util": "^0.17.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
