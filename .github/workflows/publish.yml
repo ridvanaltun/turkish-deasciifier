@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set today date
-        run: echo "TODAY_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      # - name: Set today date
+      #   run: echo "TODAY_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: Publish releases
         env:

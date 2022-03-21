@@ -1,5 +1,6 @@
 const { Tray, Menu, globalShortcut, nativeImage } = require("electron");
 const path = require("path");
+const { autoUpdater } = require("electron-updater");
 
 class TrayGenerator {
   constructor(window, store) {
@@ -107,6 +108,33 @@ class TrayGenerator {
       },
       {
         type: "separator",
+      },
+      {
+        label: "Check updates",
+        type: "checkbox",
+        checked: this.store.get("checkUpdates"),
+        click: (event) => {
+          this.store.set("checkUpdates", event.checked);
+
+          if (event.checked) {
+            this.store.set("latestSkippedVersion", null);
+            autoUpdater.checkForUpdates();
+          }
+        },
+      },
+      {
+        label: "Update",
+        type: "normal",
+        click: () => {
+          this.store.set("forceUpdate", true);
+          autoUpdater.checkForUpdates();
+        },
+      },
+      {
+        type: "separator",
+      },
+      {
+        role: "about",
       },
       {
         role: "quit",

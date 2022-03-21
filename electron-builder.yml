@@ -6,8 +6,8 @@ appId: com.github.ridvanaltun.turkishdeasciifier
 publish:
   - github
 
-releaseInfo:
-  releaseName: "${version} (${env.TODAY_DATE})"
+# releaseInfo:
+#   releaseName: "${version} (${env.TODAY_DATE})"
 #   releaseNotesFile: "release-notes.md"
 
 mac:
@@ -16,7 +16,8 @@ mac:
   entitlements: "build/entitlements.mac.plist"
   entitlementsInherit: "build/entitlements.mac.plist"
   target:
-    - dmg
+    # - dmg
+    - default # dmg and zip, zip needed for auto updates
 
 win:
   icon: "assets/images/icon.ico"

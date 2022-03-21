@@ -9,11 +9,19 @@ const patterns = require("../lib/deasciifier.patterns.min");
 Deasciifier.init(patterns);
 
 const TrayGenerator = require("./TrayGenerator");
-// const AppUpdater = require("./AppUpdater");
+const AppUpdater = require("./AppUpdater");
+
+app.setAboutPanelOptions({
+  applicationName: app.name,
+  applicationVersion: app.getVersion(),
+  authors: ["Rıdvan Altun"],
+  website: "https://github.com/ridvanaltun/turkish-deasciifier",
+  iconPath: path.join(__dirname, "../../assets/images/logo.png"),
+});
 
 let mainWindow = null;
 let trayObject = null;
-// let updaterObject = null;
+let updaterObject = null;
 
 if (is.development) require("electron-reloader")(module);
 
@@ -40,9 +48,19 @@ const initStore = () => {
     store.set("useShortcut", true);
   }
 
+  if (store.get("checkUpdates") === undefined) {
+    store.set("checkUpdates", true);
+  }
+
+  if (store.get("latestSkippedVersion") === undefined) {
+    store.set("latestSkippedVersion", null);
+  }
+
   if (store.get("alwaysOnTop") === undefined) {
     store.set("alwaysOnTop", false);
   }
+
+  store.set("forceUpdate", false);
 };
 
 const createMainWindow = () => {
@@ -100,12 +118,10 @@ const createMainWindow = () => {
   });
 };
 
-// const createUpdater = () => {
-//   updaterObject = new AppUpdater(
-//     path.join(__dirname, "../../src/client/version.html")
-//   );
-//   updaterObject.createUpdater();
-// };
+const createUpdater = () => {
+  updaterObject = new AppUpdater(mainWindow, store);
+  updaterObject.start();
+};
 
 const createTray = () => {
   trayObject = new TrayGenerator(mainWindow, store);
@@ -178,7 +194,7 @@ app.on("ready", () => {
   initStore();
   createMainWindow();
   createTray();
-  // createUpdater();
+  createUpdater();
 
   mainWindow.webContents.on("dom-ready", applyPreferences);
 
