@@ -119,7 +119,7 @@ class TrayGenerator {
 
   createTray = () => {
     const icon = nativeImage.createFromPath(
-      path.join(__dirname, "./assets/TrayIcon.png")
+      path.join(__dirname, "./assets/TrayIconTemplate.png")
     );
     icon.setTemplateImage(true);
 
