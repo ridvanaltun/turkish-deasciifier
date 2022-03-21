@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.0.1...v1.1.0) (2022-03-21)
+
+
+### Features
+
+* auto updater ([da1f8e5](https://github.com/ridvanaltun/turkish-deasciifier/commit/da1f8e5ed43daa06b54af7aa2b07c759c936702b))
+
 ## [1.0.1](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.0.0...v1.0.1) (2022-03-21)
 
 
