@@ -10,11 +10,6 @@
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 0px;
-}
-
-.overlay-content {
-  overflow: scroll;
 }
 
 .background-content {
@@ -99,50 +94,6 @@
   background: lightgreen;
 }
 
-.navbar-brand {
-  display: inline-block;
-  padding: 0;
-  vertical-align: middle;
-}
-
-.navbar-brand img {
-  display: inline-block;
-  margin-right: 0.5em;
-  padding: 3px;
-}
-.navbar-brand img:hover {
-  -webkit-filter: drop-shadow(0 0 3px #888);
-  filter: drop-shadow(0 0 3px #888);
-}
-
-.navbar {
-  border-bottom: 1px solid #888;
-  /* Permalink - use to edit and share this gradient:
-      http://colorzilla.com/gradient-editor/#ffffff+0,ededed+100;WhiteCustom */
-  background: rgb(255, 255, 255); /* Old browsers */
-  background: -moz-linear-gradient(
-    top,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(237, 237, 237, 1) 100%
-  ); /* FF3.6-15 */
-  background: -webkit-linear-gradient(
-    top,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(237, 237, 237, 1) 100%
-  ); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(237, 237, 237, 1) 100%
-  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
-}
-
-.navbar > .container .navbar-brand,
-.navbar > .container-fluid .navbar-brand {
-  margin-left: 0;
-}
-
 .heading {
   display: inline-block;
   margin: 0;
@@ -153,44 +104,17 @@
   text-shadow: none;
 }
 
-.list-group-item {
-  border: 0;
-}
-
 .navbar-li-active {
   background: rgb(33, 150, 243);
   color: white;
   font-weight: bold;
 }
 
-.navbar-li-active:hover {
-  background: orange;
-}
-
 .navbar-li-active .navbar-btn {
   color: white;
 }
 
-.navbar-default .navbar-nav > li > a {
-  color: #444;
-}
 
-.navbar-default .navbar-nav > li > a:hover {
-  background: orange;
-  color: white;
-}
-
-.list-group {
-  box-shadow: none;
-  -webkit-box-shadow: none;
-}
-
-.panel {
-  font-size: 1.2em;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #888;
-  padding: 5px;
-}
 /* Overrides */
 
 html {
@@ -272,6 +196,11 @@ body {
   font-size: 1.2em;
   min-width: 3.5em;
 }
+
+#redo-btn {
+  border-top-right-radius: 10px;
+}
+
 .navbar-btn:hover {
   background: orange;
   color: white;
