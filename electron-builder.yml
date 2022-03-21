@@ -6,6 +6,10 @@ appId: com.github.ridvanaltun.turkishdeasciifier
 publish:
   - github
 
+releaseInfo:
+  releaseName: "${version} (${env.TODAY_DATE})"
+#   releaseNotesFile: "release-notes.md"
+
 mac:
   icon: "assets/images/icon.icns"
   category: "public.app-category.utilities"
