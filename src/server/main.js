@@ -1,6 +1,5 @@
 const path = require("path");
 const { app, BrowserWindow, globalShortcut, clipboard } = require("electron");
-const { NSEventMonitor, NSEventMask } = require("nseventmonitor");
 const { is } = require("electron-util");
 const Store = require("electron-store");
 
@@ -15,7 +14,6 @@ const TrayGenerator = require("./TrayGenerator");
 let mainWindow = null;
 let trayObject = null;
 // let updaterObject = null;
-let macEventMonitor = null;
 
 if (is.development) require("electron-reloader")(module);
 
@@ -47,15 +45,6 @@ const initStore = () => {
   }
 };
 
-const enableMacEventMonitor = () => {
-  macEventMonitor.start(
-    NSEventMask.leftMouseDown | NSEventMask.rightMouseDown,
-    () => {
-      mainWindow.hide();
-    }
-  );
-};
-
 const createMainWindow = () => {
   mainWindow = new BrowserWindow({
     transparent: true,
@@ -76,8 +65,6 @@ const createMainWindow = () => {
     },
   });
 
-  macEventMonitor = new NSEventMonitor();
-
   if (is.development) mainWindow.webContents.openDevTools({ mode: "detach" });
 
   mainWindow.loadURL(
@@ -87,7 +74,6 @@ const createMainWindow = () => {
   mainWindow.on("blur", () => {
     if (store.get("alwaysOnTop") === false) {
       mainWindow.hide();
-      macEventMonitor.stop();
 
       if (store.get("clearOnMinimize")) {
         mainWindow.webContents.send("CLEAR_TEXT_AREA");
@@ -104,14 +90,7 @@ const createMainWindow = () => {
     // register refresh shortcut
     globalShortcut.register("Command+R", () => null);
 
-    if (mainWindow.isAlwaysOnTop() === false) enableMacEventMonitor();
-
     mainWindow.webContents.send("FOCUS_EDITOR");
-  });
-
-  mainWindow.on("hide", () => {
-    // stop capturing global mouse events
-    macEventMonitor.stop();
   });
 
   globalShortcut.register("Command+1", () => {
@@ -167,19 +146,12 @@ store.onDidChange("alwaysOnTop", () => {
   if (mainWindow) {
     const isEnabled = store.get("alwaysOnTop");
 
-    if (isEnabled) {
-      macEventMonitor.stop();
-
-      trayObject.showWindow();
-    } else {
-      enableMacEventMonitor();
-      // mainWindow.hide();
-    }
+    if (isEnabled) trayObject.showWindow();
   }
 });
 
 // hide dock icon
-app.dock.hide();
+if (is.macos) app.dock.hide();
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (gotTheLock === false) app.quit();

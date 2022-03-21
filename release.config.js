@@ -12,13 +12,19 @@ module.exports = {
       },
     ],
     [
+      "@semantic-release/exec", // set changelog file for electron release
+      {
+        shell: "echo ${nextRelease.notes} >> build/release-notes.md",
+      },
+    ],
+    [
       "@semantic-release/npm", // set package.json version
       {
         npmPublish: false,
       },
     ],
     [
-      "@semantic-release/git", // send a commit
+      "@semantic-release/git", // send a commit and tag
       {
         assets: ["package.json", "package-lock.json", "CHANGELOG.md"],
         message:

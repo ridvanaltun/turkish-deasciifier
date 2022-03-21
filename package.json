@@ -40,14 +40,14 @@
     "electron-log": "^4.4.6",
     "electron-store": "^6.0.1",
     "electron-updater": "^4.6.5",
-    "electron-util": "^0.17.2",
-    "nseventmonitor": "^1.0.2"
+    "electron-util": "^0.17.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
     "@commitlint/config-conventional": "^16.2.1",
     "@commitlint/cz-commitlint": "^16.2.3",
     "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^9.0.1",
     "babel-eslint": "^10.1.0",
