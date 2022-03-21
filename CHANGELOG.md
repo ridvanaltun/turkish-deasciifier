@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.0.0...v1.0.1) (2022-03-21)
+
+
+### Bug Fixes
+
+* make default tray icon white for windows ([69a298b](https://github.com/ridvanaltun/turkish-deasciifier/commit/69a298b31ceaa0e96e3fd41d44ff28cec4b2df46))
+* some styling issues ([4668240](https://github.com/ridvanaltun/turkish-deasciifier/commit/4668240c9827a441945aa493208adc496386fd12))
+* windows and linux ([ec5757e](https://github.com/ridvanaltun/turkish-deasciifier/commit/ec5757e815395a32ec5644faf31ce78936265d57))
+
 # 1.0.0 (2022-03-20)
 
 
