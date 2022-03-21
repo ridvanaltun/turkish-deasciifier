@@ -8,6 +8,7 @@
     "commit": "git-cz",
     "start": "electron .",
     "build": "electron-builder --publish never --mac --win --linux",
+    "build:mac": "electron-builder --publish never --mac",
     "publish": "electron-builder --publish always --mac --win --linux",
     "postinstall": "electron-builder install-app-deps",
     "lint": "eslint .",
