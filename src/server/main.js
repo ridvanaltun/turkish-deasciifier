@@ -138,7 +138,6 @@ const applyPreferences = () => {
     "SET_CORRECTION_MENU",
     store.get("showCorrectionBubble")
   );
-  mainWindow.setAlwaysOnTop(store.get("alwaysOnTop"));
 };
 
 store.onDidChange("translateWhileTyping", () => {
@@ -196,6 +195,8 @@ app.on("ready", () => {
   createMainWindow();
   createTray();
   createUpdater();
+
+  mainWindow.setAlwaysOnTop(true);
 
   mainWindow.webContents.on("dom-ready", applyPreferences);
 
