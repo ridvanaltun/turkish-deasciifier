@@ -42,7 +42,7 @@
 
 ## **Authors**
 
-This project exists thanks to all the people who contribute — [contribute](CONTRIBUTING.md).
+This project exists thanks to all the people who contribute.
 
 <a href = "https://github.com/ridvanaltun/turkish-deasciifier/graphs/contributors">
   <img src = "https://contrib.rocks/image?repo=ridvanaltun/turkish-deasciifier"/>
