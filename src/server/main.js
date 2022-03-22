@@ -72,6 +72,7 @@ const createMainWindow = () => {
     frame: false,
     fullscreenable: false,
     resizable: is.development,
+    skipTaskbar: true,
     webPreferences: {
       devTools: is.development,
       webviewTag: true,
