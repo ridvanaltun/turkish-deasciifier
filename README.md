@@ -1,10 +1,9 @@
-<div>
+<div align="center">
   <img
     src="./assets/images/logo.png"
     alt="Turkish Deasciifier Logo"
     height="128"
   />
-  <br />
   <p>
     <h3>
       <b>
@@ -17,6 +16,14 @@
       Tray application for Turkish Deasciifier
     </b>
   </p>
+  <br/>
+  <img
+    src="./docs/preview.png"
+    alt="Preview Image"
+    width="600"
+  />
+  <br/>
+  <br/>
   <p>
 
 [![Build Status](https://github.com/ridvanaltun/turkish-deasciifier/actions/workflows/publish.yml/badge.svg)](https://github.com/ridvanaltun/turkish-deasciifier/actions/workflows/publish.yml)
