@@ -1,3 +1,11 @@
+## [1.1.1](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.1.0...v1.1.1) (2022-03-23)
+
+
+### Bug Fixes
+
+* hide app icon from windows taskbar ([8fe1321](https://github.com/ridvanaltun/turkish-deasciifier/commit/8fe13211ad8d77a316975d42d44279a49857a67c))
+* taskbar position related issues ([fd0448c](https://github.com/ridvanaltun/turkish-deasciifier/commit/fd0448c9e43cce1004ff0ee029c57651be7e2b84))
+
 # [1.1.0](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.0.1...v1.1.0) (2022-03-21)
 
 
