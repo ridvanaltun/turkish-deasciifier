@@ -252,6 +252,11 @@ deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter
       ipcRenderer.on("SET_EDITOR_LINE_WRAPPING", (_, enabled) => {
         editor.setOption("lineWrapping", enabled);
       });
+
+      ipcRenderer.on("SET_ARROW_VISIBILITY", (_, enabled) => {
+        if (enabled) document.getElementById('arrow').style.display = "block"
+        else document.getElementById('arrow').style.display = "table"
+      });
     </script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 const { Tray, Menu, globalShortcut, nativeImage } = require("electron");
 const path = require("path");
 const { autoUpdater } = require("electron-updater");
+const { getWindowPosition } = require("../lib/getWindowPosition");
 
 class TrayGenerator {
   constructor(window, store) {
@@ -9,28 +10,69 @@ class TrayGenerator {
     this.store = store;
   }
 
-  getWindowPosition = () => {
-    const windowBounds = this.window.getBounds();
-    const trayBounds = this.tray.getBounds();
+  setArrowVisibility = () => {
+    const whereIsTray = getWindowPosition(this.tray);
 
-    // center window horizontally below the tray icon
-    const x = Math.round(
-      trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2
-    );
+    switch (whereIsTray) {
+      case "trayCenter":
+        this.window.webContents.send("SET_ARROW_VISIBILITY", true);
+        break;
 
-    // position window vertically below the tray icon
-    const y = Math.round(trayBounds.y + trayBounds.height);
-
-    return { x, y };
+      case "topRight":
+      case "trayBottomCenter":
+      case "bottomLeft":
+      case "bottomRight":
+        this.window.webContents.send("SET_ARROW_VISIBILITY", false);
+        break;
+    }
   };
 
   setWinPosition = () => {
-    const position = this.getWindowPosition();
-    this.window.setPosition(position.x, position.y, false);
+    const whereIsTray = getWindowPosition(this.tray);
+
+    let x = null;
+    let y = null;
+
+    const windowBounds = this.window.getBounds();
+    const trayBounds = this.tray.getBounds();
+
+    switch (whereIsTray) {
+      case "trayCenter":
+        x = Math.round(
+          trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2
+        );
+        y = Math.round(trayBounds.y + trayBounds.height);
+        break;
+
+      case "topRight":
+        x = Math.round(trayBounds.x + trayBounds.width / 2);
+        y = Math.round(trayBounds.y + trayBounds.height);
+        break;
+
+      case "trayBottomCenter":
+        x = Math.round(
+          trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2
+        );
+        y = Math.round(trayBounds.y - windowBounds.height);
+        break;
+
+      case "bottomLeft":
+        x = Math.round(trayBounds.x + trayBounds.width);
+        y = Math.round(trayBounds.y + trayBounds.height - windowBounds.height);
+        break;
+
+      case "bottomRight":
+        x = Math.round(trayBounds.x - windowBounds.width);
+        y = Math.round(trayBounds.y + trayBounds.height - windowBounds.height);
+        break;
+    }
+
+    this.window.setPosition(x, y, false);
   };
 
   showWindow = () => {
     this.setWinPosition();
+    this.setArrowVisibility();
     this.window.setVisibleOnAllWorkspaces(true, {
       skipTransformProcessType: true,
     });
@@ -65,10 +107,7 @@ class TrayGenerator {
         label: "Always on top",
         type: "checkbox",
         checked: this.store.get("alwaysOnTop"),
-        click: (event) => {
-          this.window.setAlwaysOnTop(event.checked);
-          this.store.set("alwaysOnTop", event.checked);
-        },
+        click: (event) => this.store.set("alwaysOnTop", event.checked),
       },
       {
         type: "separator",
