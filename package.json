@@ -1,7 +1,7 @@
 {
   "name": "turkish-deasciifier",
   "productName": "Turkish Deasciifier",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Tray app for Turkish Deasciifier",
   "main": "src/server/main.js",
   "scripts": {

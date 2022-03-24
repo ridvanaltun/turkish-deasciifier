@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.1.1...v1.2.0) (2022-03-24)
+
+
+### Bug Fixes
+
+* a taskbar related styling issue ([010b56d](https://github.com/ridvanaltun/turkish-deasciifier/commit/010b56dd36367ad591efca71d13eec293a5c1c2d))
+
+
+### Features
+
+* ability manage deasciify text at clipboard ([2f6a561](https://github.com/ridvanaltun/turkish-deasciifier/commit/2f6a561cc5b775fe36cfd4ea2138b64e8db89b2f))
+
 ## [1.1.1](https://github.com/ridvanaltun/turkish-deasciifier/compare/v1.1.0...v1.1.1) (2022-03-23)
 
 
