@@ -1,12 +1,7 @@
 const path = require("path");
-const { app, BrowserWindow, globalShortcut, clipboard } = require("electron");
+const { app, BrowserWindow, globalShortcut } = require("electron");
 const { is } = require("electron-util");
 const Store = require("electron-store");
-
-const { Deasciifier } = require("../lib/deasciifier.min");
-const patterns = require("../lib/deasciifier.patterns.min");
-
-Deasciifier.init(patterns);
 
 const TrayGenerator = require("./TrayGenerator");
 const AppUpdater = require("./AppUpdater");
@@ -44,8 +39,12 @@ const initStore = () => {
     store.set("clearOnMinimize", true);
   }
 
-  if (store.get("useShortcut") === undefined) {
-    store.set("useShortcut", true);
+  if (store.get("useToggleShortcut") === undefined) {
+    store.set("useToggleShortcut", true);
+  }
+
+  if (store.get("useClipboardShortcut") === undefined) {
+    store.set("useClipboardShortcut", true);
   }
 
   if (store.get("checkUpdates") === undefined) {
@@ -110,12 +109,6 @@ const createMainWindow = () => {
     globalShortcut.register("Command+R", () => null);
 
     mainWindow.webContents.send("FOCUS_EDITOR");
-  });
-
-  globalShortcut.register("Command+1", () => {
-    const readText = clipboard.readText("clipboard");
-    const deasciifyedObject = Deasciifier.deasciify(readText);
-    clipboard.write(deasciifyedObject, "clipboard");
   });
 };
 

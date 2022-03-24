@@ -1,12 +1,20 @@
-const { Tray, Menu, globalShortcut, nativeImage } = require("electron");
+const {
+  Tray,
+  Menu,
+  globalShortcut,
+  nativeImage,
+  clipboard,
+} = require("electron");
 const path = require("path");
 const { autoUpdater } = require("electron-updater");
-
 const Positioner = require("electron-positioner");
+const { is } = require("electron-util");
 const { getWindowPosition } = require("../lib/getWindowPosition");
 
 const { Deasciifier } = require("../lib/deasciifier.min");
 const patterns = require("../lib/deasciifier.patterns.min");
+
+Deasciifier.init(patterns);
 
 class TrayGenerator {
   constructor(window, store) {
@@ -65,13 +73,29 @@ class TrayGenerator {
     }
   };
 
-  toggleShortcut = (event) => {
-    this.store.set("useShortcut", event);
+  deasciifyClipboard = () => {
+    const readText = clipboard.readText("clipboard");
+    const deasciifyedObject = Deasciifier.deasciify(readText);
+    clipboard.write(deasciifyedObject, "clipboard");
+  };
 
-    if (event) {
+  toggleShortcut = (enabled) => {
+    this.store.set("useToggleShortcut", enabled);
+
+    if (enabled) {
       globalShortcut.register("CommandOrControl+U", this.toggleWindow);
     } else {
       globalShortcut.unregister("CommandOrControl+U");
+    }
+  };
+
+  clipboardShortcut = (enabled) => {
+    this.store.set("useClipboardShortcut", enabled);
+
+    if (enabled) {
+      globalShortcut.register("CommandOrControl+1", this.deasciifyClipboard);
+    } else {
+      globalShortcut.unregister("CommandOrControl+1");
     }
   };
 
@@ -114,10 +138,18 @@ class TrayGenerator {
         click: (event) => this.store.set("launchAtStart", event.checked),
       },
       {
-        label: "Use CMD+U shortcut",
+        label: `Toggle with ${is.macos ? "CMD" : "CTRL"}+U shortcut`,
         type: "checkbox",
-        checked: this.store.get("useShortcut"),
+        checked: this.store.get("useToggleShortcut"),
         click: (event) => this.toggleShortcut(event.checked),
+      },
+      {
+        label: `Deasciify clipboard with ${
+          is.macos ? "CMD" : "CTRL"
+        }+1 shortcut`,
+        type: "checkbox",
+        checked: this.store.get("useClipboardShortcut"),
+        click: (event) => this.clipboardShortcut(event.checked),
       },
       {
         type: "separator",
@@ -169,8 +201,11 @@ class TrayGenerator {
 
     this.tray.setIgnoreDoubleClickEvents(true);
 
-    const isShortcutEnabled = this.store.get("useShortcut");
-    this.toggleShortcut(isShortcutEnabled);
+    const isToggleShortcutEnabled = this.store.get("useToggleShortcut");
+    this.toggleShortcut(isToggleShortcutEnabled);
+
+    const isClipboardShortcutEnabled = this.store.get("useClipboardShortcut");
+    this.clipboardShortcut(isClipboardShortcutEnabled);
 
     this.tray.on("click", this.toggleWindow);
     this.tray.on("right-click", this.rightClickMenu);
