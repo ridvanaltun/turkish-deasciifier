@@ -1,13 +1,21 @@
 const { Tray, Menu, globalShortcut, nativeImage } = require("electron");
 const path = require("path");
 const { autoUpdater } = require("electron-updater");
+
+const Positioner = require("electron-positioner");
 const { getWindowPosition } = require("../lib/getWindowPosition");
+
+const { Deasciifier } = require("../lib/deasciifier.min");
+const patterns = require("../lib/deasciifier.patterns.min");
 
 class TrayGenerator {
   constructor(window, store) {
     this.tray = null;
     this.window = window;
     this.store = store;
+    this.positioner = new Positioner(window);
+
+    Deasciifier.init(patterns);
   }
 
   setArrowVisibility = () => {
@@ -30,44 +38,10 @@ class TrayGenerator {
   setWinPosition = () => {
     const whereIsTray = getWindowPosition(this.tray);
 
-    let x = null;
-    let y = null;
-
-    const windowBounds = this.window.getBounds();
+    // const windowBounds = this.window.getBounds();
     const trayBounds = this.tray.getBounds();
 
-    switch (whereIsTray) {
-      case "trayCenter":
-        x = Math.round(
-          trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2
-        );
-        y = Math.round(trayBounds.y + trayBounds.height);
-        break;
-
-      case "topRight":
-        x = Math.round(trayBounds.x + trayBounds.width / 2);
-        y = Math.round(trayBounds.y + trayBounds.height);
-        break;
-
-      case "trayBottomCenter":
-        x = Math.round(
-          trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2
-        );
-        y = Math.round(trayBounds.y - windowBounds.height);
-        break;
-
-      case "bottomLeft":
-        x = Math.round(trayBounds.x + trayBounds.width);
-        y = Math.round(trayBounds.y + trayBounds.height - windowBounds.height);
-        break;
-
-      case "bottomRight":
-        x = Math.round(trayBounds.x - windowBounds.width);
-        y = Math.round(trayBounds.y + trayBounds.height - windowBounds.height);
-        break;
-    }
-
-    this.window.setPosition(x, y, false);
+    this.positioner.move(whereIsTray, trayBounds);
   };
 
   showWindow = () => {

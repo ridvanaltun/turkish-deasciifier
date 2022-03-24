@@ -39,6 +39,7 @@
   "homepage": "https://github.com/ridvanaltun/turkish-deasciifier#readme",
   "dependencies": {
     "electron-log": "^4.4.6",
+    "electron-positioner": "^4.1.0",
     "electron-store": "^6.0.1",
     "electron-updater": "^4.6.5",
     "electron-util": "^0.17.2"
