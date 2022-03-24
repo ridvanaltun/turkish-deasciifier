@@ -33,19 +33,24 @@
   </p>
 </div>
 
-### **Features**
+## **Features**
 
-**Deasciifier:** Adapt your texts to Turkish with one click.
+|  Deasciifier |  Asciifier | Correction Bubble  | Auto  |
+|---|---|---|---|
+| <img src="./docs/deasciify.gif" />  |  <img src="./docs/asciify.gif" /> | <img src="./docs/correction-bubble.gif" />  | <img src="./docs/auto.gif" />  |
+|  Adapt your texts to Turkish with one click. | Translate Turkish texts to ASCII with one click. | Use correction bubble for manuel edits.  | Automatically deasciify as you type.  |
 
-**Asciifier:** Also, set your Turkish texts to ASCII with one click.
+### **Other features worth mentioning**
 
 **Offline:** It works offline, no internet required.
 
-**Tray Application:** It runs as a tray application, not bothering you with dummy screens.
-
-**Multiplatform:** Every platform are supported; macOS, Windows, and even Linux.
+**Multiplatform:** Every platform are supported; **macOS**, **Windows**, and **Linux**.
 
 **Auto Update:** It comes with an updater, you can easily update the app.
+
+## **Download**
+
+[Click go to the latest release](https://github.com/ridvanaltun/turkish-deasciifier/releases/latest)
 
 ## **Authors**
 
